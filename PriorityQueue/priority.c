@@ -17,6 +17,7 @@ void percolateDown(customer** queue, int last);
 
 int main(){
 	printf("This works!\n");
+	printf("Even this works!\n");
 	customer* queue[201];
 
 	int i = 0;
@@ -30,7 +31,7 @@ int main(){
 	}
 
 	int last = 0;
-	
+
 	print_pq(queue, 201, last);
 
 	insert(queue, 23.4, 0, 200, &last);
@@ -155,5 +156,5 @@ void percolateDown(customer** queue, int last){
 			cur = child + 1;
 		}
 		child = cur*2;
-	}	
+	}
 }
