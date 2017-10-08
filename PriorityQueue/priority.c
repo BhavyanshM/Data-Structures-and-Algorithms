@@ -13,8 +13,24 @@ void percolateUp(customer** queue, int last);
 void insert(customer** queue, float time, short type, int size, int* last);
 void print_pq(customer** queue, int size, int last);
 customer* top(customer** queue, int size, int* last);
-void percolateDown(customer** queue, int last);
+void percolateDown(customer** queue, int size);
+void init_pq(customer** queue, int size);
 
+void init_pq(customer** queue, int size){
+        int i = 0;
+        for(i = 0; i<size; i++){
+                queue[i] = (customer*)malloc(sizeof(customer));
+                queue[i]->arrivalTime = -1;
+                queue[i]->startOfService = -1;
+                queue[i]->departureTime = -1;
+                queue[i]->pqtime = -1;
+                queue[i]->nextCust = NULL;
+        }
+}
+
+
+
+/*
 int main(){
 	printf("This works!\n");
 	printf("Even this works!\n");
@@ -95,7 +111,7 @@ int main(){
 	
 	return 0;
 }
-
+*/
 void insert(customer** queue, float time, short type, int size, int* last){
 	printf("INSERT\n");
 	queue[++(*last)]->pqtime = time;

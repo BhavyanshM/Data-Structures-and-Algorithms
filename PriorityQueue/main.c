@@ -1,22 +1,32 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
+#include "queue.h"
+#include "priority.h"
+#include "model.h"
 
 #define LAMBDA 2
 #define MUE 3
 #define SERVERS 2
-
-long f(int n);
-float getPercentIdleTime(int lambda, int mu, int servers);
-float getAveragePeopleInSystem(float P0, int lambda, int mu, int servers);
-float power(float a, int n);
-float getAverageTimeTaken(float L, int lambda);
-float getAverageSizeQueue(float L, int lambda, int mu);
-float getAverageTimeInQueue(float Lq, int lambda);
-float getUtilizationFactor(int lambda, int mu, int servers);
+#define PQ_SIZE 201
 
 int main(){
-//	customer pq[200];
+	customer* queue[PQ_SIZE];
+	int last = 0;
+
+	init_pq(queue, PQ_SIZE);	
+
+        print_pq(queue, 201, last);
+
+        insert(queue, 23.4, 0, 200, &last);
+        print_pq(queue, 201, last);
+
+        insert(queue, 14.9, 0, 200, &last);
+        print_pq(queue, 201, last);
+
+        insert(queue, 4.3, 0, 200, &last);
+	print_pq(queue, 201, last);
+
 	float P0 = getPercentIdleTime(LAMBDA, MUE, SERVERS);
 	printf("%f\n", getPercentIdleTime(LAMBDA, MUE, SERVERS));
 	float L = getAveragePeopleInSystem(P0, LAMBDA, MUE, SERVERS);

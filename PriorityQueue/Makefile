@@ -1,12 +1,16 @@
 all: tree clean
 
-tree: model.o sim.o main.o
-	gcc -o tree model.o sim.o main.o
+tree: model.o priority.o queue.o main.o
+	gcc -o tree model.o priority.o queue.o main.o
+
 model.o: model.c
 	gcc -c model.c
 
-sim.o: sim.c
-	gcc -c sim.c
+priority.o: priority.c
+	gcc -c priority.c
+
+queue.o: queue.c
+	gcc -c queue.c
 
 main.o: main.c
 	gcc -c main.c

@@ -9,29 +9,80 @@ typedef struct customer{
          struct customer* nextCust;
 } customer;
 
+void enqueue(customer** FIFO, customer* cust);
+customer* dequeue(customer** FIFO);
+void print_queue(customer* FIFO);
+
+/*
 int main(){
 
-	customer* FIFO;
+	customer* FIFO = NULL;
 	customer* newCustomer = (customer*)malloc(sizeof(customer));
 	newCustomer->pqtime = -1;
 	newCustomer->nextCust = NULL;
-	enqueue(FIFO, newCustomer);
+	enqueue(&FIFO, newCustomer);
 	customer* one = (customer*)malloc(sizeof(customer));
-        newCustomer->pqtime = 0;
-	one(FIFO, one);
+        one->pqtime = 0.32;	
+	one->nextCust = NULL;
+	enqueue(&FIFO, one);
 	customer* two = (customer*)malloc(sizeof(customer));
-        two->pqtime = -1;
-	enqueue(FIFO, two);
+        two->pqtime = 2.48;
+	two->nextCust = NULL;
+	enqueue(&FIFO, two);
 
+	print_queue(FIFO);
+	
+	printf("DEQUEUE:%.2f\n", dequeue(&FIFO)->pqtime);
+
+	print_queue(FIFO);
+
+	printf("DEQUEUE:%.2f\n", dequeue(&FIFO)->pqtime);
+
+        print_queue(FIFO);
+
+	printf("DEQUEUE:%.2f\n", dequeue(&FIFO)->pqtime);
+
+	print_queue(FIFO);
+
+	return 0;
 }
 
-void enqueue(customer* FIFO, customer* cust){
+*/
+
+void enqueue(customer** FIFO, customer* cust){
+	if(*FIFO==NULL){
+		*FIFO = cust;
+		return;
+	}
+	customer* root = *FIFO;
+	while(root->nextCust!=NULL){
+		root = root->nextCust;
+	}
+	root->nextCust = cust;
+}
+
+void print_queue(customer* FIFO){
+	if(FIFO==NULL)return;
+	printf("CUST:%.2f\n", FIFO->pqtime);
 	while(FIFO->nextCust!=NULL){
 		FIFO = FIFO->nextCust;
+		printf("CUST:%.2f\n", FIFO->pqtime);
 	}
-	FIFO->nextCust = cust;
 }
 
-void print_queue(){
-
+customer* dequeue(customer** FIFO){
+	if(*FIFO == NULL)return NULL;
+	customer* result;
+	if((*FIFO)->nextCust==NULL){
+		result = (*FIFO);
+		(*FIFO) = NULL;
+	}else{
+		customer* temp = *FIFO;
+		while(temp->nextCust->nextCust!=NULL){
+			temp = temp->nextCust;
+		}
+		result = temp->nextCust;
+		temp->nextCust = NULL;
+	}
+	return result;
 }
