@@ -10,6 +10,8 @@
 #define SERVERS 2
 #define PQ_SIZE 201
 
+void processNextEvent(customer** pq, int* serversAvailable, customer** FIFO, int size, int* last);
+
 float getNextRandomInterval(int avg){
 	float result = (float)rand()/(float)RAND_MAX;
 	//result = (-1)*(1.0/(float)avg)*log(result);
@@ -20,7 +22,7 @@ int main(){
 	customer* pq[PQ_SIZE];
 	int last = 0;
 	init_pq(pq, PQ_SIZE);	
-
+	customer* FIFO = NULL;
 	int n = 5000;
 /*
 	int LAMBDA = 0;
@@ -47,17 +49,23 @@ int main(){
 	float absoluteTime = 0.0;
 	int serversAvailable = SERVERS;
 	int i = 0;
-/*	
-	Place first arrivals in PQ
+	int pq_size = 0;
+///*	
+//	Place first arrivals in PQ
 	
-	while(PQ is not empty){
-		processNextEvent();
-		if(moreArrivals && PQ.size <= SERVERS +1){
-			generateNextSetOfArrivals();
+	while(pq_size>0){
+		processNextEvent(pq, &serversAvailable, FIFO, PQ_SIZE, &pq_size);
+		if(n>0 && pq_size <= SERVERS +1){
+			//generateNextSetOfArrivals();
+			while(pq_size<PQ_SIZE){
+				absoluteTime += getNextRandomInterval(lambda);
+				insert(pq, absoluteTime, 0, PQ_SIZE, &pq_size);
+				n--;
+			}
 		}
 	}
-	showResults();
-*/
+//	showResults();
+//*/
 //	Analytical Model and Calculations
 //	BEGIN
 	float P0 = getPercentIdleTime(LAMBDA, MUE, SERVERS);
@@ -75,27 +83,30 @@ int main(){
 	printf("rho: %f\n", rho);
 	return 0;
 }
-/*
-void processNextEvent(int* serversAvailable, customer* event, customer** FIFO){
-	if(event == Arrival){
+///*
+void processNextEvent(customer** queue, int* serversAvailable, customer** FIFO, int size, int* last){
+	customer* event = top(queue, size, last);
+	if(event.departureTime == -1){
 		if(*serversAvailable>0){
 			*serversAvailable--;
-			event->startOfServiceTime = event->arrivalTime;
-			event->departureTime = event->startOfServiceTime + getNextRandomInterval(mu);
+			event->startOfService = event->arrivalTime;
+			event->departureTime = event->startOfService + getNextRandomInterval(mu);
 			insert(queue, event->departureTime, 1, 201, &last);
 		}else {
 			enqueue(FIFO, event);
 		}
-	}else if(event == Departure){
+	}else {
 		*serversAvailable++;
-		processStatistics();
+		//processStatistics();
 		if(*FIFO!=NULL){
 			customer* newEvent = dequeue(FIFO);
-			newEvent->startOfServiceTime = event->departureTime;
-			newEvent->departureTime = newEvent->startOfServiceTime + getNextRandomInterval(mu);
+			newEvent->startOfService = event->departureTime;
+			newEvent->departureTime = newEvent->startOfService + getNextRandomInterval(mu);
 			insert(queue, newEvent->departureTime, 1, 201, &last);
 			*serversAvailable--;
 		}
 	}
 }
-*/
+
+//*/
+
