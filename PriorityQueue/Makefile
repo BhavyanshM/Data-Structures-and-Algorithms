@@ -1,7 +1,7 @@
 all: tree clean
 
-tree: model.o priority.o queue.o main.o
-	gcc -o tree model.o priority.o queue.o main.o
+tree: model.o priority.o queue.o main.o 
+	gcc model.o priority.o queue.o main.o -o tree -l m
 
 model.o: model.c
 	gcc -c model.c
