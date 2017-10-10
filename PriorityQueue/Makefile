@@ -16,5 +16,4 @@ main.o: main.c
 	gcc -c main.c
 
 clean:
-	./tree
-	rm tree *.o 
+	rm *.o 

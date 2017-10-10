@@ -113,21 +113,21 @@ int main(){
 }
 */
 void insert(customer** queue, float time, short type, int size, int* last){
-	printf("INSERT\n");
+	// printf("INSERT\n");
 	queue[++(*last)]->pqtime = time;
 	if(type==0)queue[(*last)]->arrivalTime = time;
-	if(type==0)queue[(*last)]->departureTime = time;
+	if(type==1)queue[(*last)]->departureTime = time;
 	percolateUp(queue, *last);
 }
 
 void percolateUp(customer** queue, int last){
-	printf("PERC\n");
+	// printf("PERC\n");
 	customer* temp = queue[last];
 	int cur = last;
 	int par = cur/2;
-	printf("OUTSIDE:%d, %d\n", cur, par);
+	// printf("OUTSIDE:%d, %d\n", cur, par);
 	while(queue[cur]->pqtime <= queue[par]->pqtime){
-		printf("WHILE:%d, %d, %.2f, %.2f\n", cur, par, queue[cur]->pqtime, queue[par]->pqtime);
+		// printf("WHILE:%d, %d, %.2f, %.2f\n", cur, par, queue[cur]->pqtime, queue[par]->pqtime);
 		if(par!=0){
 			temp = queue[par];
 			queue[par] = queue[cur];
@@ -141,8 +141,12 @@ void percolateUp(customer** queue, int last){
 void print_pq(customer** queue, int size, int last){
 	printf("\nPRINT PRIORITY QUEUE\n");
 	int i = 0;
-	for(i = 0; i<last+1; i++){
-			printf("\t%d  %.2f\n", i, queue[i]->pqtime);
+	for(i = 1; i<last+1; i++){
+			printf("\t%d  p=%.2f\t", i, queue[i]->pqtime);
+			printf("\tat=%.2f\t", queue[i]->arrivalTime);
+			printf("\tsos=%.2f\t", queue[i]->startOfService);
+			printf("\tdt=%.2f\n", queue[i]->departureTime);
+
 	}
 }
 
@@ -150,7 +154,7 @@ customer* top(customer** queue, int size, int* last){
 	if(last==0)return queue[0];
 	customer* result = queue[1];
 	queue[1] = queue[(*last)--];
-	print_pq(queue, size, *last);
+	// print_pq(queue, size, *last);
 	percolateDown(queue, *last);
 	return result;
 }
