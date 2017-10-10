@@ -103,6 +103,12 @@ int main(){
 void processNextEvent(customer** queue, int* serversAvailable, customer** FIFO, int size, int* last, int mu, float* absoluteTime){
 	printf("CALLED:%d, %d, %d, %d\n", *serversAvailable, size, *last, mu);
 	customer* event = top(queue, size, last);
+
+	printf("\tp=%.2f\t", event->pqtime);
+	printf("\tat=%.2f\t", event->arrivalTime);
+	printf("\tsos=%.2f\t", event->startOfService);
+	printf("\tdt=%.2f\n", event->departureTime);
+
 	if(event->departureTime == -1){printf("Arrival Hit\n");
 		if((*serversAvailable)>0){
 			(*serversAvailable)--;

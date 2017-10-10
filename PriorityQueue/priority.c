@@ -164,6 +164,7 @@ void percolateDown(customer** queue, int last){
 	int child = 2;
 	customer* temp;
 	while(child+1 <= last){
+		// printf("SLIDING:%d, %d\n", cur, child);
 		if(queue[child]->pqtime < queue[child+1]->pqtime && queue[child]->pqtime < queue[cur]->pqtime){
 			temp = queue[cur];
 			queue[cur] = queue[child];
