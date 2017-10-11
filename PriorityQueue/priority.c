@@ -10,15 +10,15 @@ typedef struct customer{
 } customer;
 
 void percolateUp(customer** queue, int last);
-void insert(customer** queue, float time, short type, int size, int* last);
+void insert(customer** queue, customer* event, float time, short type, int size, int* last);
 void print_pq(customer** queue, int size, int last);
 customer* top(customer** queue, int size, int* last);
 void percolateDown(customer** queue, int size);
-void init_pq(customer** queue, int size);
+void init_pq(customer** queue, int start, int size);
 
-void init_pq(customer** queue, int size){
-        int i = 0;
-        for(i = 0; i<size; i++){
+void init_pq(customer** queue, int start, int size){
+        int i = start;
+        for(i = start; i<size; i++){
                 queue[i] = (customer*)malloc(sizeof(customer));
                 queue[i]->arrivalTime = -1;
                 queue[i]->startOfService = -1;
@@ -28,7 +28,12 @@ void init_pq(customer** queue, int size){
         }
 }
 
-
+void print_e(customer* event){
+	printf("\tp=%.2f\t", event->pqtime);
+	printf("\tat=%.2f\t", event->arrivalTime);
+	printf("\tsos=%.2f\t", event->startOfService);
+	printf("\tdt=%.2f\n", event->departureTime);
+}
 
 /*
 int main(){
@@ -112,12 +117,25 @@ int main(){
 	return 0;
 }
 */
-void insert(customer** queue, float time, short type, int size, int* last){
+void insert(customer** queue, customer* event, float time, short type, int size, int* last){
 	// printf("INSERT\n");
-	queue[++(*last)]->pqtime = time;
-	if(type==0)queue[(*last)]->arrivalTime = time;
-	if(type==1)queue[(*last)]->departureTime = time;
-	percolateUp(queue, *last);
+	
+	if(*last<size){
+		if(type==0){
+			queue[++(*last)]->pqtime = time;
+			queue[(*last)]->arrivalTime = time;
+            queue[(*last)]->startOfService = -1;
+            queue[(*last)]->departureTime = -1;
+		}
+		if(type==1){
+			queue[++(*last)]->arrivalTime = event->arrivalTime;
+			queue[(*last)]->pqtime = event->departureTime;
+			queue[(*last)]->departureTime = event->departureTime;
+			queue[(*last)]->startOfService = event->startOfService;
+		}	
+		percolateUp(queue, *last);
+	}
+	else return;
 }
 
 void percolateUp(customer** queue, int last){
@@ -164,17 +182,26 @@ void percolateDown(customer** queue, int last){
 	int child = 2;
 	customer* temp;
 	while(child+1 <= last){
-		// printf("SLIDING:%d, %d\n", cur, child);
+		printf("SLIDING:%d, %d\n", cur, child);
+		print_e(queue[cur]);
+		print_e(queue[child]);
+		print_e(queue[child+1]);
 		if(queue[child]->pqtime < queue[child+1]->pqtime && queue[child]->pqtime < queue[cur]->pqtime){
+			// printf("FIRST\n");
 			temp = queue[cur];
 			queue[cur] = queue[child];
 			queue[child] = temp;
 			cur = child;
 		}else if(queue[child]->pqtime >= queue[child+1]->pqtime && queue[child+1]->pqtime < queue[cur]->pqtime){
+			// printf("SECOND\n");
 			temp = queue[cur];
-                        queue[cur] = queue[child+1];
-                        queue[child+1] = temp;
+            queue[cur] = queue[child+1];
+            queue[child+1] = temp;
 			cur = child + 1;
+		}else if(queue[child+1]->pqtime >= queue[cur]->pqtime && queue[child]->pqtime >= queue[cur]->pqtime){
+		// }else{
+			// printf("THIRD\n");
+			return;
 		}
 		child = cur*2;
 	}

@@ -8,7 +8,7 @@
 
 #define LAMBDA 2
 #define MUE 3
-#define SERVERS 5
+#define SERVERS 2
 #define PQ_SIZE 21
 
 void processNextEvent(customer** pq, int* serversAvailable, customer** FIFO, int size, int* last, int mu, float* absoluteTime);
@@ -19,10 +19,17 @@ float getNextRandomInterval(int avg){
 	return result;
 }
 
+void print(customer* event){
+	printf("\tp=%.2f\t", event->pqtime);
+	printf("\tat=%.2f\t", event->arrivalTime);
+	printf("\tsos=%.2f\t", event->startOfService);
+	printf("\tdt=%.2f\n", event->departureTime);
+}
+
 int main(){
 	customer* pq[PQ_SIZE];
 	int last = 0;
-	init_pq(pq, PQ_SIZE);	
+	init_pq(pq, 0, PQ_SIZE);	
 	customer* FIFO = NULL;
 	int n = 30;
 /*
@@ -48,6 +55,7 @@ int main(){
 //	Computer Simulation for the Service Center
 //	BEGIN
 	float absoluteTime = 0.0;
+	float curTime = 0.0;
 	int serversAvailable = SERVERS;
 	int lambda = LAMBDA;
 	int mu = MUE;
@@ -55,29 +63,31 @@ int main(){
 	int pq_size = 0;
 ///*	
 //	Place first arrivals in PQ
-	insert(pq, absoluteTime, 0, PQ_SIZE, &pq_size);
+	insert(pq, NULL, absoluteTime, 0, PQ_SIZE, &pq_size);
 
 	char* temp = "";
 
 	while(pq_size>0){
 		// scanf("%s", temp);
 		// if(strcmp(temp, "n")==0){
-
+		init_pq(pq, pq_size+1, PQ_SIZE);
 		// }else if(strcmp(temp, "p")==0){
-		// 	print_pq(pq, PQ_SIZE, pq_size);
+			print_pq(pq, PQ_SIZE, pq_size);
 		// }
-		print_pq(pq, PQ_SIZE, pq_size);
-		printf("n=%d, pq_size=%d, time=%.2f, M=%d\n", n, pq_size, absoluteTime, serversAvailable);
-		processNextEvent(pq, &serversAvailable, &FIFO, PQ_SIZE, &pq_size, mu , &absoluteTime);
+		// print_pq(pq, PQ_SIZE, pq_size);
+		// printf("n=%d, pq_size=%d, time=%.2f, M=%d\n", n, pq_size, absoluteTime, serversAvailable);
+		processNextEvent(pq, &serversAvailable, &FIFO, PQ_SIZE, &pq_size, mu , &curTime);
 		if(n>0 && pq_size <= SERVERS +1){
 			//generateNextSetOfArrivals();
-			while(pq_size<PQ_SIZE-1){
-				printf("INSIDE:n=%d, pq_size=%d, time=%.2f\n", n, pq_size, absoluteTime);
-				print_pq(pq, PQ_SIZE, pq_size);
-				insert(pq, absoluteTime + getNextRandomInterval(lambda), 0, PQ_SIZE, &pq_size);
+			while(n>0 && pq_size<PQ_SIZE-1){
+				printf("n:%d\n",n);
+				// printf("INSIDE:n=%d, pq_size=%d, time=%.2f\n", n, pq_size, absoluteTime);
+				// print_pq(pq, PQ_SIZE, pq_size);
+				absoluteTime += getNextRandomInterval(lambda);
+				insert(pq, NULL, absoluteTime, 0, PQ_SIZE, &pq_size);
 				n--;
 			}
-			printf("OUT\n");
+			// printf("OUT\n");
 		}
 	}
 //	showResults();
@@ -101,13 +111,10 @@ int main(){
 }
 ///*
 void processNextEvent(customer** queue, int* serversAvailable, customer** FIFO, int size, int* last, int mu, float* absoluteTime){
-	printf("CALLED:%d, %d, %d, %d\n", *serversAvailable, size, *last, mu);
+	// printf("CALLED:%d, %d, %d, %d\n", *serversAvailable, size, *last, mu);
 	customer* event = top(queue, size, last);
 
-	printf("\tp=%.2f\t", event->pqtime);
-	printf("\tat=%.2f\t", event->arrivalTime);
-	printf("\tsos=%.2f\t", event->startOfService);
-	printf("\tdt=%.2f\n", event->departureTime);
+	// print(event);
 
 	if(event->departureTime == -1){printf("Arrival Hit\n");
 		if((*serversAvailable)>0){
@@ -115,8 +122,9 @@ void processNextEvent(customer** queue, int* serversAvailable, customer** FIFO, 
 			*absoluteTime = event->arrivalTime;
 			event->startOfService = event->arrivalTime;
 			event->departureTime = event->arrivalTime + getNextRandomInterval(mu);
-			insert(queue, event->departureTime, 1, 201, last);
-			printf("Servers:%d\n", *serversAvailable);
+			insert(queue, event, event->departureTime, 1, 201, last);
+			// print(event);
+			// printf("Servers:%d\n", *serversAvailable);
 		}else {
 			enqueue(FIFO, event);
 		}
@@ -128,7 +136,7 @@ void processNextEvent(customer** queue, int* serversAvailable, customer** FIFO, 
 			customer* newEvent = dequeue(FIFO);
 			newEvent->startOfService = event->departureTime;
 			newEvent->departureTime = newEvent->startOfService + getNextRandomInterval(mu);
-			insert(queue, newEvent->departureTime, 1, 201, last);
+			insert(queue, newEvent, newEvent->departureTime, 1, 201, last);
 			(*serversAvailable)--;
 		}
 	}
