@@ -50,6 +50,7 @@ int main(){
 */
 
 void enqueue(customer** FIFO, customer* cust){
+	// printf("ENQUEUEING\n");
 	if(*FIFO==NULL){
 		*FIFO = cust;
 		return;
@@ -59,6 +60,7 @@ void enqueue(customer** FIFO, customer* cust){
 		root = root->nextCust;
 	}
 	root->nextCust = cust;
+	root->nextCust->nextCust = NULL;
 }
 
 void print_queue(customer* FIFO){
@@ -71,6 +73,7 @@ void print_queue(customer* FIFO){
 }
 
 customer* dequeue(customer** FIFO){
+	// printf("DEQUEUEING\n");
 	if(*FIFO == NULL)return NULL;
 	customer* result;
 	if((*FIFO)->nextCust==NULL){

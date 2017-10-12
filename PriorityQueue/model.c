@@ -27,7 +27,6 @@ float getPercentIdleTime(int lambda, int mu, int servers){
 	p *= mu;
 	p /= (servers*mu - lambda);
 	sum += p;
-	printf("HERE:%f\n", 1/sum);
 	return 1/sum;
 }
 

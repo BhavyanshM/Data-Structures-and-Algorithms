@@ -147,6 +147,7 @@ void percolateUp(customer** queue, int last){
 	while(queue[cur]->pqtime <= queue[par]->pqtime){
 		// printf("WHILE:%d, %d, %.2f, %.2f\n", cur, par, queue[cur]->pqtime, queue[par]->pqtime);
 		if(par!=0){
+			// printf("Swapping:%.2f, %.2f\n", queue[par]->pqtime, queue[cur]->pqtime);
 			temp = queue[par];
 			queue[par] = queue[cur];
 			queue[cur] = temp;
@@ -182,18 +183,22 @@ void percolateDown(customer** queue, int last){
 	int child = 2;
 	customer* temp;
 	while(child+1 <= last){
-		printf("SLIDING:%d, %d\n", cur, child);
-		print_e(queue[cur]);
-		print_e(queue[child]);
-		print_e(queue[child+1]);
+		// printf("SLIDING:%d, %d\n", cur, child);
+		// print_e(queue[cur]);
+		// print_e(queue[child]);
+		// print_e(queue[child+1]);
 		if(queue[child]->pqtime < queue[child+1]->pqtime && queue[child]->pqtime < queue[cur]->pqtime){
 			// printf("FIRST\n");
+			// printf("Down, Swapping:%.2f, %.2f\n", queue[child]->pqtime, queue[cur]->pqtime);
+
 			temp = queue[cur];
 			queue[cur] = queue[child];
 			queue[child] = temp;
 			cur = child;
 		}else if(queue[child]->pqtime >= queue[child+1]->pqtime && queue[child+1]->pqtime < queue[cur]->pqtime){
 			// printf("SECOND\n");
+			// printf("Down, Swapping:%.2f, %.2f\n", queue[child+1]->pqtime, queue[cur]->pqtime);
+
 			temp = queue[cur];
             queue[cur] = queue[child+1];
             queue[child+1] = temp;
