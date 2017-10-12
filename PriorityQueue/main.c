@@ -33,6 +33,11 @@ float totalTimeOfSim = 0;
 float totalTimeInQueue = 0;
 float totalServiceTime = 0;
 
+int LAMBDA = 0;
+int MUE = 0;
+int SERVERS = 0;
+
+
 int main(){
 	customer* pq[PQ_SIZE];
 	int last = 0;
@@ -40,9 +45,6 @@ int main(){
 	customer* FIFO = NULL;
 	int n = 25;
 
-	int LAMBDA = 0;
-	int MUE = 0;
-	int SERVERS = 0;
 
 //	Input from User on the parameters of the program
 	printf("Please enter the total number of customers (n):");
@@ -82,7 +84,7 @@ int main(){
 		// }else if(strcmp(temp, "p")==0){
 			// print_pq(pq, PQ_SIZE, pq_size);
 		// }
-		// print_pq(pq, PQ_SIZE, pq_size);
+		print_pq(pq, PQ_SIZE, pq_size);
 		// printf("SERVERS_AVAIL:%d\n", serversAvailable);
 		// print_queue(FIFO);
 		
@@ -140,7 +142,7 @@ void processNextEvent(customer** queue, int* serversAvailable, customer** FIFO, 
 	if(event == NULL || event->arrivalTime==-1)return;
 	// print(event);
 
-	if(event->arrivalTime != event->startOfService){//printf("Arrival Hit\n");
+	if(event->arrivalTime != event->startOfService){printf("Arrival Hit\n");
 		if((*serversAvailable)>0){
 			(*serversAvailable)--;
 			*absoluteTime = event->arrivalTime;
@@ -157,7 +159,7 @@ void processNextEvent(customer** queue, int* serversAvailable, customer** FIFO, 
 		}else {
 			enqueue(FIFO, event);
 		}
-	}else {//printf("Departure Hit\n");
+	}else {printf("Departure Hit\n");
 		(*serversAvailable)++;
 		*absoluteTime = event->departureTime;
 		totalTimeInSystem += event->departureTime - event->arrivalTime;

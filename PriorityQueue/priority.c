@@ -173,8 +173,8 @@ customer* top(customer** queue, int size, int* last){
 	if(last==0)return queue[0];
 	customer* result = queue[1];
 	queue[1] = queue[(*last)--];
-	// print_pq(queue, size, *last);
 	percolateDown(queue, *last);
+	print_pq(queue, size, *last);
 	return result;
 }
 
