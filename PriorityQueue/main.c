@@ -5,11 +5,7 @@
 #include "queue.h"
 #include "priority.h"
 #include "model.h"
-/*
-#define LAMBDA 2
-#define MUE 3
-#define SERVERS 2
-*/
+
 #define PQ_SIZE 201
 
 void processNextEvent(customer** pq, int* serversAvailable, customer** FIFO, int size, int* last, int mu, float* absoluteTime);
@@ -32,6 +28,12 @@ float totalIdleTime = 0;
 float totalTimeOfSim = 0;
 float totalTimeInQueue = 0;
 float totalServiceTime = 0;
+
+float prevTime = 0.0;
+float enqueueTime = 0.0;
+float dequeueTime = 0.0;
+
+
 
 int LAMBDA = 0;
 int MUE = 0;
@@ -65,60 +67,43 @@ int main(){
 //	BEGIN
 	float absoluteTime = 0.0;
 	float curTime = 0.0;
-	float prevTime = 0.0;
 	int serversAvailable = SERVERS;
 	int lambda = LAMBDA;
 	int mu = MUE;
 	int i = 0;
 	int pq_size = 0;
-///*	
-//	Place first arrivals in PQ
 
 	char* temp = "";
 	pq_size = 1;
 	while(pq_size>0){
 		if(pq_size == -1)pq_size = 0;
-		// scanf("%s", temp);
-		// if(strcmp(temp, "n")==0){
 		init_pq(pq, pq_size+1, PQ_SIZE);
-		// }else if(strcmp(temp, "p")==0){
-			// print_pq(pq, PQ_SIZE, pq_size);
-		// }
-		print_pq(pq, PQ_SIZE, pq_size);
-		// printf("SERVERS_AVAIL:%d\n", serversAvailable);
-		// print_queue(FIFO);
-		
 
-		// printf("n=%d, pq_size=%d, time=%.2f, M=%d\n", n, pq_size, absoluteTime, serversAvailable);
 		processNextEvent(pq, &serversAvailable, &FIFO, PQ_SIZE, &pq_size, mu , &curTime);
 		if(n>0 && pq_size <= SERVERS +1){
-			//generateNextSetOfArrivals();
+			//generateNextSetOfArrivals
 			while(n>0 && pq_size<PQ_SIZE-1){
-				// printf("n:%d\n",n);
-				// printf("INSIDE:n=%d, pq_size=%d, time=%.2f\n", n, pq_size, absoluteTime);
-				// print_pq(pq, PQ_SIZE, pq_size);
 				absoluteTime += getNextRandomInterval(lambda);
 				insert(pq, NULL, absoluteTime, 0, PQ_SIZE, &pq_size);
 				n--;
 			}
-			// printf("OUT\n");
 		}
 	}
 	totalTimeOfSim = absoluteTime;
 
-	printf("CurTime:%.2f, AbsTime:%.2f\n", curTime, absoluteTime);
+	printf("FinalCurTime:%.2f, AbsTime:%.2f\n", curTime, absoluteTime);
 
+//	showResults
 	printf("\nResults from the Simulation:\n");
-	printf("\tP0:.%.2f\n", 0.0);
-	printf("\tW: %.2f\n", totalTimeInSystem/totalCustomers);
-	printf("\tWq: %.2f\n", 0.0);
+	printf("\tP0:%f\n", totalIdleTime/totalTimeOfSim);
+	printf("\tW: %f\n", totalTimeInSystem/totalCustomers);
+	printf("\tWq: %f\n", totalTimeInQueue/totalCustomers);
 	printf("\trho: %f\n", totalServiceTime/(SERVERS*absoluteTime));
-//	showResults();
-//*/
+
+
 //	Analytical Model and Calculations
 //	BEGIN
 	float P0 = getPercentIdleTime(LAMBDA, MUE, SERVERS);
-	// printf("%f\n", getPercentIdleTime(LAMBDA, MUE, SERVERS));
 	float L = getAveragePeopleInSystem(P0, LAMBDA, MUE, SERVERS);
 	float W = getAverageTimeTaken(L, LAMBDA);
 	float Lq = getAverageSizeQueue(L, LAMBDA, MUE);
@@ -135,47 +120,49 @@ int main(){
 	printf("\trho: %f\n", rho);
 	return 0;
 }
-///*
+
 void processNextEvent(customer** queue, int* serversAvailable, customer** FIFO, int size, int* last, int mu, float* absoluteTime){
-	// printf("CALLED:%d, %d, %d, %d\n", *serversAvailable, size, *last, mu);
 	customer* event = top(queue, size, last);
 	if(event == NULL || event->arrivalTime==-1)return;
-	// print(event);
 
-	if(event->arrivalTime != event->startOfService){printf("Arrival Hit\n");
+	if(event->arrivalTime != event->startOfService){printf("Arrival Hit in PQ ...\n");
+		if(*serversAvailable==SERVERS){
+			totalIdleTime += event->arrivalTime - prevTime;
+		}
 		if((*serversAvailable)>0){
 			(*serversAvailable)--;
 			*absoluteTime = event->arrivalTime;
 			event->startOfService = event->arrivalTime;
 			float tempTime = getNextRandomInterval(mu);
 			totalServiceTime += tempTime;
-			printf("%.2f\n", totalServiceTime);
 			event->departureTime = event->arrivalTime + tempTime;
-			// print_pq(queue, PQ_SIZE, *last);
 			insert(queue, event, event->departureTime, 1, 201, last);
-			// printf("CHANGED_M:%d\n", *serversAvailable);
-			// print(event);
-			// printf("Servers:%d\n", *serversAvailable);
 		}else {
+			printf("ENQUEUEING to FIFO ...\n");
+			enqueueTime = *absoluteTime;
 			enqueue(FIFO, event);
 		}
-	}else {printf("Departure Hit\n");
+	}else {printf("Departure Hit in PQ ...\n");
 		(*serversAvailable)++;
+		//processStatistics
+		prevTime = event->departureTime; 
 		*absoluteTime = event->departureTime;
 		totalTimeInSystem += event->departureTime - event->arrivalTime;
 
-		//processStatistics();
-		if(*FIFO!=NULL){
+		
+		if((*FIFO)!=NULL){
+			printf("DEQUEUEING from FIFO ...\n");
+			dequeueTime = *absoluteTime;
+			totalTimeInQueue += dequeueTime - enqueueTime;
 			customer* newEvent = dequeue(FIFO);
-			newEvent->startOfService = event->departureTime;
+			newEvent->startOfService = newEvent->arrivalTime;
 			float tempTime = getNextRandomInterval(mu);
 			totalServiceTime += tempTime;
-			newEvent->departureTime = newEvent->startOfService + tempTime;
+			newEvent->departureTime = *absoluteTime + tempTime;
 			insert(queue, newEvent, newEvent->departureTime, 1, 201, last);
 			(*serversAvailable)--;
 		}
 	}
 }
 
-//*/
 
