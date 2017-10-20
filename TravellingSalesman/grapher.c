@@ -6,7 +6,7 @@ const int C = 5;
 
 void readFile(float adj[R][C]);
 void print(float adj[R][C]);
-
+float travel(float adj[R][C], int* path, int n);
 
 int main(void){
 	float graph[R][C];
@@ -46,3 +46,13 @@ void print(float adj[R][C]){
 		printf("\n\n\n");
 	}
 }
+
+float travel(float adj[R][C], int* path, int n){
+	float result = 0;
+	int i = 0;
+	for(i = 0; i<n-1; i++){
+		result += adj[path[i]][path[i+1]];
+	}
+	result += adj[path[0]][path[n-1]];
+}
+
