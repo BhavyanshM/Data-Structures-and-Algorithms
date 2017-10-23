@@ -1,12 +1,17 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+const int rs = 5;
+const int cs = 5;
+
 long f(int n);
-void perm(int* s, int n);
+void perm(float adj[rs][cs], int* s, int n);
 void print_perm(int* s, int n);
 void init_perm(int* s, int n);
+float travel(float adj[rs][cs], int* path, int n);
 
 int count = 0;
+
 
 // int main(){
 // 	int n = 5;
@@ -23,7 +28,7 @@ void init_perm(int* s, int n){
         }
 }
 
-void perm(int* s, int n){
+void perm(float adj[rs][cs], int* s, int n){
 	int m,k,p,q,i;
 	int temp = 0;
 	long nfact = f(n);
@@ -49,6 +54,7 @@ void perm(int* s, int n){
 			s[q] = temp;
 			p++;q--;
 		}
+		printf("COST:%.2f\t", travel(adj, s, n));
 		print_perm(s,n);
 		count++;
 	}

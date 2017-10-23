@@ -54,6 +54,7 @@ float travel(float adj[R][C], int* path, int n){
 	for(i = 0; i<n-1; i++){
 		result += adj[path[i]][path[i+1]];
 	}
-	result += adj[path[0]][path[n-1]];
+	result += adj[path[n-1]][path[0]];
+	return result;
 }
 
