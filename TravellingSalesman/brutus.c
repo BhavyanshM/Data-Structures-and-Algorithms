@@ -3,18 +3,18 @@
 
 long f(int n);
 void perm(int* s, int n);
-print_perm(int* s, int n);
+void print_perm(int* s, int n);
 void init_perm(int* s, int n);
 
 int count = 0;
 
-int main(){
-	int n = 5;
-	int s[n];
-	init_perm(s,n);
-	perm(s,n);
-	return 0;
-}
+// int main(){
+// 	int n = 5;
+// 	int s[n];
+// 	init_perm(s,n);
+// 	perm(s,n);
+// 	return 0;
+// }
 
 void init_perm(int* s, int n){
 	int i = 0;
@@ -60,7 +60,7 @@ long f(int n){
 	return f(n-1)*n;		
 }
 
-print_perm(int* s, int n){
+void print_perm(int* s, int n){
 	int i = 0;
 	for(i = 0; i<n; i++){
 		printf("%d ", s[i]);

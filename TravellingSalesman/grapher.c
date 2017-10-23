@@ -4,16 +4,17 @@
 const int R = 5;
 const int C = 5;
 
-void readFile(float adj[R][C]);
-void print(float adj[R][C]);
-float travel(float adj[R][C], int* path, int n);
 
-int main(void){
-	float graph[R][C];
-	readFile(graph);
-	print(graph);
-	return 0;
-}
+// void readFile(float adj[R][C]);
+// void print(float adj[R][C]);
+// float travel(float adj[R][C], int* path, int n);
+
+// int main(void){
+// 	float graph[R][C];
+// 	readFile(graph);
+// 	print(graph);
+// 	return 0;
+// }
 
 void readFile(float adj[R][C]){
 	int i = 0;
