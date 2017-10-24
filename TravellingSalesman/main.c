@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include "brutus.h"
 #include "grapher.h"
+#include "genetic.h"
 
 const int nR = 5;
 const int nC = 5;
@@ -18,7 +19,11 @@ int main(){
 	print(graph);
 
 	perm(graph, s,n);
+	
+	int ntours = 10;
 
+	route* routes[ntours]; 
+	init_gen(routes, ntours, n);
 
 	return 0;
 }
