@@ -25,5 +25,21 @@ int main(){
 	route* routes[ntours]; 
 	init_gen(routes, ntours, n);
 
+	print_routes(routes, ntours, n);
+
+	int k = 0;
+
+	for(k = 0; k<ntours; k++){
+		routes[k]->cost = travel(graph, routes[k]->path, n);
+	}
+
+	print_routes(routes, ntours, n);
+
+	selection_sort(routes, ntours, n);
+
+	print_routes(routes, ntours, n);
+
+	mutate(routes[0]->path, routes[1]->path, 10);
+
 	return 0;
 }

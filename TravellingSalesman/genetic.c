@@ -1,35 +1,20 @@
+#include <time.h>
+#include <stdio.h>
+#include <string.h>
 #include "genetic.h"
-// #include "brutus.h"
 
-void init_route(int* path, int n);
 void init_gen(route** routes, int ntours, int n);
-void create_gen(route** routes, int ntours, int n);
+void create_gen(route** routes, route** newRoutes, int ntours, int n, int numMutants);
 void selection_sort(route** routes, int ntours, int n);
-void mutate(int* path, int n);
-void init_gen(route** routes, int ntours, int n);
-void print_perm(int* s, int n);
+void mutate(int* elite, int* mutant, int n);
+void print_routes(route** routes, int ntours, int n);
 
-
-void init_route(int* path, int n){
-	int i = 0;
-	path = (int*)malloc(n*sizeof(int));
-	for(i = 0; i<n; i++){
-		path[i] = 0;
-	}
-}
-
-void copy_route(int* orig, int* copy, int n){
-	int i = 0; 
-	for(i = 0; i<n; i++){
-		copy[i] = orig[i];
-	}
-}
 
 void init_gen(route** routes, int ntours, int n){
 	int i = 0;
 	for(i = 0; i<ntours; i++){
+		routes[i] = (route*) malloc(sizeof(route));
 		routes[i]->cost = 0.0;		
-		init_route(routes[i]->path, n);
 	}
 	i = 0;
         int m,k,p,q;
@@ -61,27 +46,98 @@ void init_gen(route** routes, int ntours, int n){
                         s[q] = temp;
                         p++;q--;
                 }
-                print_perm(s,n);
-		copy_route(s, routes[i]->path, n);
+		routes[i]->path = (int*)malloc(n*sizeof(int));
+		memcpy(routes[i]->path,s, n*sizeof(int));
         }
 
 }
 
-void create_gen(route** routes, int ntours, int n){
+void create_gen(route** routes, route** newRoutes, int ntours, int n, int numMutants){
+	int i = 0;
+        for(i = 0; i<ntours; i++){
+                newRoutes[i] = (route*) malloc(sizeof(route));
+                newRoutes[i]->cost = 0.0;
+        }
+	
+	//Copy the elite route structs into the newRoutes
+	memcpy(newRoutes[0]->path, routes[0]->path, n*sizeof(int));
+	memcpy(newRoutes[1]->path, routes[1]->path, n*sizeof(int));
 
+	//Generate 'numMutants' mutations of the elite
+	for(i = 2; i<2+numMutants; i++){
+		if(i%2==0){
+			
+		}else{
+			
+		}
+	}
+
+	//Fill rest of newRoutes with fresh mutations of a mutation
+	i = 0;
+        int m,k,p,q;
+        int temp = 0;
+        long nfact = f(n);
+        int s[n];
+        for(i = 0; i<n; i++){
+                s[i] = i;
+        }
+        for(i = 0; i<ntours; i++){
+                m = n - 2;
+                while(s[m]>s[m+1]){
+                        m = m-1;
+                }
+                k = n-1;
+                while(s[m]>s[k]){
+                        k=k-1;
+                }
+                //swap(m,k)
+                temp = s[m];
+                s[m] = s[k];
+                s[k] = temp;
+                p = m + 1;
+                q = n-1;
+                while(p<q){
+                        //swap(p,q)
+                        temp = s[p];
+                        s[p] = s[q];
+                        s[q] = temp;
+                        p++;q--;
+                }
+                routes[i]->path = (int*)malloc(n*sizeof(int));
+                memcpy(routes[i]->path,s, n*sizeof(int));
+        }
 }
 
 void selection_sort(route** routes, int ntours, int n){
-
+	int i = 0, j = 0;
+	route* temp;
+	for(i = 0; i<ntours-1; i++){
+		for(j = 0; j<ntours-1; j++){
+			if(routes[j]->cost > routes[j+1]->cost){
+				temp = routes[j];
+                		routes[j] = routes[j+1];
+                		routes[j+1] = temp;
+			}
+		}
+	}
 }
 
-void mutate(int* path, int n){
+void mutate(int* elite, int* mutant, int n){
+	int i=0,j=0;
+	srand(time(NULL));
+	i = abs(rand()) % (n/2);
+	srand(rand()*timeofday());
+	j = n/2 + abs(rand()) % (n/2);
+	printf("%d, %d\n", i, j); 
+
+	
 
 }
 
 void print_routes(route** routes, int ntours, int n){
 	int i = 0; 
 	for(i = 0; i<ntours; i++){
+		printf("%.2f\t", routes[i]->cost);
 		print_perm(routes[i]->path, n);
 	}
 	printf("\n");
