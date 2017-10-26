@@ -23,8 +23,8 @@ int count = 0;
 
 void init_perm(int* s, int n){
 	int i = 0;
-        for(i = 0; i<n; i++){
-		s[i] = i;
+        for(i = 0; i<n-1; i++){
+		s[i] = i+1;
         }
 }
 
@@ -74,8 +74,10 @@ long f(int n){
 
 void print_perm(int* s, int n){
 	int i = 0;
+	printf("%d ", 0);
 	for(i = 0; i<n; i++){
 		printf("%d ", s[i]);
 	}
+	printf("%d ", 0);
 	printf("\n");
 }

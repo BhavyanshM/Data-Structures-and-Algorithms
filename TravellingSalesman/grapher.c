@@ -25,8 +25,11 @@ void readFile(float adj[R][C]){
 	if(fp!=NULL){
 		for(i = 0; i<R; i++){
 			for(j = 0; j<C; j++){
-				printf("READING:%d,%d\n", i,j);
-				if(i==j)continue;
+				// printf("READING:%d,%d\n", i,j);
+				if(i==j){
+					adj[i][i] = 0;
+					continue;
+				}
 				fscanf(fp, "%s\n", string);
 				// printf("%s\n", string);
 				adj[i][j] = atof(string);
@@ -44,7 +47,7 @@ void print(float adj[R][C]){
 	for(i = 0; i<R; i++){
 		printf("\t");
 		for(j = 0; j<C; j++){
-			printf("%.2f\t", adj[i][j]);
+			printf("%.1f ", adj[i][j]);
 		}
 		printf("\n\n\n");
 	}
@@ -53,10 +56,11 @@ void print(float adj[R][C]){
 float travel(float adj[R][C], int* path, int n){
 	float result = 0;
 	int i = 0;
+	result += adj[0][path[0]];
 	for(i = 0; i<n-1; i++){
 		result += adj[path[i]][path[i+1]];
 	}
-	result += adj[path[n-1]][path[0]];
+	result += adj[path[n-1]][0];
 	return result;
 }
 
