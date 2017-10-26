@@ -1,5 +1,5 @@
-const int nrs = 5;
-const int ncs = 5;
+const int nrs = 20;
+const int ncs = 20;
 
 long f(int n);
 void perm(float adj[nrs][ncs], int* s, int n);

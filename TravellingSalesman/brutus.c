@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-const int rs = 5;
-const int cs = 5;
+const int rs = 20;
+const int cs = 20;
 
 long f(int n);
 void perm(float adj[rs][cs], int* s, int n);
@@ -29,10 +29,12 @@ void init_perm(int* s, int n){
 }
 
 void perm(float adj[rs][cs], int* s, int n){
+	// printf("CALLED\n");
 	int m,k,p,q,i;
 	int temp = 0;
 	long nfact = f(n);
 	for(i = 0; i<nfact; i++){
+		// printf("PERM:%d/%ld\n", i,nfact);
 		m = n - 2;
 		while(s[m]>s[m+1]){
 			m = m-1;
@@ -54,16 +56,20 @@ void perm(float adj[rs][cs], int* s, int n){
 			s[q] = temp;
 			p++;q--;
 		}
-		printf("COST:%.2f\t", travel(adj, s, n));
-		print_perm(s,n);
+		// printf("COST:%.2f\t", travel(adj, s, n));
+		// print_perm(s,n);
 		count++;
 	}
 }
 
 long f(int n){
-	if(n<2)
-		return 1;
-	return f(n-1)*n;		
+	// printf("REACHED:fact(%d)\n", n);
+	long result = 1;
+	int i = 0;
+	for(i = 1; i<=n; i++){
+		result *= i;
+	}
+	return result;		
 }
 
 void print_perm(int* s, int n){

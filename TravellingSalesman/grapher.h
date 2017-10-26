@@ -1,5 +1,5 @@
-const int ROWS = 5;
-const int COLS = 5;
+const int ROWS = 20;
+const int COLS = 20;
 
 void readFile(float adj[ROWS][COLS]);
 void print(float adj[ROWS][COLS]);

@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-const int R = 5;
-const int C = 5;
+const int R = 20;
+const int C = 20;
 
 
 // void readFile(float adj[R][C]);
@@ -25,6 +25,8 @@ void readFile(float adj[R][C]){
 	if(fp!=NULL){
 		for(i = 0; i<R; i++){
 			for(j = 0; j<C; j++){
+				printf("READING:%d,%d\n", i,j);
+				if(i==j)continue;
 				fscanf(fp, "%s\n", string);
 				// printf("%s\n", string);
 				adj[i][j] = atof(string);
