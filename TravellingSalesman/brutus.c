@@ -6,7 +6,7 @@ const int rs = 20;
 const int cs = 20;
 
 long f(int n);
-void perm(float adj[rs][cs], int* s, int n);
+float perm(float adj[rs][cs], int* s, int n);
 void print_perm(int* s, int n);
 void init_perm(int* s, int n);
 float travel(float adj[rs][cs], int* path, int n);
@@ -29,7 +29,7 @@ void init_perm(int* s, int n){
         }
 }
 
-void perm(float adj[rs][cs], int* s, int n){
+float perm(float adj[rs][cs], int* s, int n){
 	// printf("CALLED\n");
 	int m,k,p,q,i,j;
 	int temp = 0;
@@ -78,8 +78,9 @@ void perm(float adj[rs][cs], int* s, int n){
 		
 		count++;
 	}
-	printf("\nCOST:%.2f\t", minCost);
+	printf("\n(Brute Force)\tOPTIMAL COST:%.2f\t", minCost);
 	print_perm(optimus,n);
+	return minCost;
 }
 
 long f(int n){

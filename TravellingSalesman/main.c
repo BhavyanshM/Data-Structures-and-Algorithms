@@ -3,12 +3,17 @@
 #include "brutus.h"
 #include "grapher.h"
 #include "genetic.h"
+#include <time.h>
 
 const int nR = 20;
 const int nC = 20;
 
 
 int main(){
+
+	clock_t start, end;
+    double cpu_time_used;
+
 	int n = 0;
 	printf("Please enter the number of Cities for this Travelling Salesman Problem solver:");
 	scanf("%d", &n);
@@ -37,10 +42,16 @@ int main(){
 
 	// printf("Permuting ...\n");
 	//Perform Brute Force algorithm
-	perm(graph, s,n);
+	start = clock();
+	float bruteForceCost = perm(graph, s,n);
+	end = clock();
+	cpu_time_used = ((double) (end - start)) / CLOCKS_PER_SEC;
+	printf("\nTime Taken by Brute Force: %.2lf s\n\n", cpu_time_used);
 	// print(graph);
 
 	// printf("REACHED\n");
+	start = clock();
+
 	route* routes[ntours]; 
 	route* newRoutes[ntours];
 	init_gen(routes, ntours, n);
@@ -97,8 +108,17 @@ int main(){
 		}
 	}
 	
-	printf("COST:%.2f\t", minCost);
+	
+
+	printf("(Genetic Algo)\tOPTIMAL COST:%.2f\t", minCost);
 	print_perm(optimus,n);
+
+	end = clock();
+	cpu_time_used = ((double) (end - start)) / CLOCKS_PER_SEC;
+	printf("\nTime Taken by Genetic Algorithm: %.2lf s\n\n", cpu_time_used);
+
+	printf("Genetic Algorithm was %.2f percent of optimal.\n", minCost/bruteForceCost * 100);
+
 	// print_routes(routes, ntours, n);
 	return 0;
 }
