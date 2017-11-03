@@ -140,9 +140,9 @@ void selection_sort(route** routes, int ntours, int n){
 void mutate(int* elite, int* mutant, int n){
 	int i=0,j=0, temp;
 	srand(time(NULL) * cnt++);
-	i = 1 + abs(rand()) % (n/2);
+	i = abs(rand()) % (n/2);
 	srand(rand()*(time(NULL) - cnt++));
-	j = 1 + n/2 + abs(rand()) % (n/2);
+	j = n/2 + abs(rand()) % (n/2);
 
 	i %= n;
 	j %= n;
