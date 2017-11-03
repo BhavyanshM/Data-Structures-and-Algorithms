@@ -54,12 +54,16 @@ void print(float adj[R][C]){
 }
 
 float travel(float adj[R][C], int* path, int n){
+
 	float result = 0;
 	int i = 0;
 	result += adj[0][path[0]];
+	// printf("Travelling...\n");
 	for(i = 0; i<n-1; i++){
+		// printf("Going from %d to %d\n", path[i], path[i+1]);
 		result += adj[path[i]][path[i+1]];
 	}
+	// printf("Travelling Still...\n");
 	result += adj[path[n-1]][0];
 	return result;
 }
