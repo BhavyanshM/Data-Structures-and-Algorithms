@@ -1,19 +1,16 @@
 all: prob clean
 
-prob: main.o brutus.o genetic.o grapher.o
-	gcc main.o brutus.o genetic.o grapher.o -o tsp 
+prob: main.o analytic.o monteCarlo.o
+	gcc main.o analytic.o monteCarlo.o -o prob 
 
 main.o: main.c
 	gcc -c main.c
 
-brutus.o: brutus.c
-	gcc -c brutus.c
+analytic.o: analytic.c
+	gcc -c analytic.c
 
-genetic.o: genetic.c
-	gcc -c genetic.c
-
-grapher.o: grapher.c
-	gcc -c grapher.c
+monteCarlo.o: monteCarlo.c
+	gcc -c monteCarlo.c
 
 clean:
 	rm *.o
