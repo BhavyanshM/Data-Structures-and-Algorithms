@@ -1,7 +1,7 @@
 all: prob clean
 
-prob: main.o analytic.o monteCarlo.o
-	gcc main.o analytic.o monteCarlo.o -o prob 
+prob: main.o analytic.o monteCarlo.o generate.o
+	gcc main.o analytic.o monteCarlo.o generate.o -o prob 
 
 main.o: main.c
 	gcc -c main.c
@@ -11,6 +11,9 @@ analytic.o: analytic.c
 
 monteCarlo.o: monteCarlo.c
 	gcc -c monteCarlo.c
+
+generate.o: generate.c
+	gcc -c generate.c
 
 clean:
 	rm *.o

@@ -1,15 +1,24 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+void readConf(char* file, int* batches, int* items, int* percentBad, int* samples);
+void genDatasets(int batches, int items, int percentBad);
+void genSimParams ();
+
+
 void readConf(char* file, int* batches, int* items, int* percentBad, int* samples){
 	FILE* fp = fopen(file, "r");
 }
 
 void genDatasets(int batches, int items, int percentBad){
-	FILE* fp = fopen("dsi", "w+");
-	for(int i = 0; i<batches; i++){
-		for(int j = 0; j<items; j++){
-			if(rand()%100)
+	FILE* fp;
+	char filename[10];
+	int i = 0, j = 0;
+	for(i = 0; i<batches; i++){
+		sprintf(filename, "files/ds%d.txt", i+1);	
+		fp = fopen(filename, "w");
+		for(j = 0; j<items; j++){
+			fprintf(fp, "%c\n", 'g');
 		}
 	}
 }
@@ -32,13 +41,13 @@ void genSimParams (){
 
 
 	if(fp!=NULL){
+		int i = 0;
 		fwrite(&a, sizeof(int), 1, fp);
-		for(int i = 0; i<a; i++){
+		for(i = 0; i<a; i++){
 			fwrite(&cats, sizeof(int), 1, fp);
 			fwrite(&freq, sizeof(freq), 1, fp);
 			fwrite(&sims, sizeof(int), 1, fp);
 		}
 	}
 
-	return 0;
 }
