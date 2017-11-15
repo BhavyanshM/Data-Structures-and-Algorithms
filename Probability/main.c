@@ -15,6 +15,24 @@ int main (){
 	int ar = 0;
 	int nums[a];
 
+	int input = 0;
+	while(input==0 || input==1){
+		printf("Please enter a number from the set {0, 1, 2} to:\n");
+		printf("\t0 : Run the Monte Carlo Simulation\n");
+		printf("\t1 : Run the Monte Carlo Algorithm for the Chip Company\n");
+		printf("\t2 : Exit");
+		printf("\nInput:");
+		scanf("%d", &input);
+
+		if(input == 0){
+			printf("Simulation Running>...\n");
+		}else if(input == 1){
+			printf("Algorithm Running>...\n");
+		}else if(input == 2){
+			break;
+		}		
+	}
+
 	if(fp!=NULL){
 		fread(&ar, sizeof(int), 1, fp);
 		fread(&nums, a*sizeof(int), 1, fp);

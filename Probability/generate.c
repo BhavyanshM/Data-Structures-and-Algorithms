@@ -1,5 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <sys/stat.h>
+#include <sys/types.h>
 
 void readConf(char* file, int* batches, int* items, int* percentBad, int* samples);
 void genDatasets(int batches, int items, int percentBad);
@@ -12,6 +14,7 @@ void readConf(char* file, int* batches, int* items, int* percentBad, int* sample
 
 void genDatasets(int batches, int items, int percentBad){
 	FILE* fp;
+	int dir = mkdir("files", 0777);
 	char filename[10];
 	int i = 0, j = 0;
 	for(i = 0; i<batches; i++){
