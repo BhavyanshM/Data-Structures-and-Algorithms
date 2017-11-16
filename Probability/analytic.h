@@ -1,4 +1,4 @@
-void probability(int* freq, float* prob, int n);
-float expected(float* prob, int cats, int n);
-void cummulative(float* prob, float* partial , int n);
-void simulate(float* partial, int n);
+void probability(int* freq, float* prob, int cats);
+float expected(float* prob, int cats);
+void cummulative(float* prob, float* partial , int cats);
+void simulate(float* partial, int events, int cats, int sims);

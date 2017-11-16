@@ -10,6 +10,7 @@ void genSimParams ();
 
 void readConf(char* file, int* batches, int* items, int* percentBad, int* samples){
 	FILE* fp = fopen(file, "r");
+	
 }
 
 void genDatasets(int batches, int items, int percentBad){
@@ -34,23 +35,23 @@ void genSimParams (){
 	int a = 10;
 	printf("%d\n", a);
 
-	int ar = 0;
+	int events = 500;
 	int nums[a];
-	int cats = 12;
-	int sims = 50;
+	int cats = 6;
+	int sims = 4;
 
-	int freq[] = {3, 5, 7, 5, 2, 3, 1, 0, 4, 8, 9, 4};
-
-
+	int freq[] = {3, 5, 7, 5, 2, 3};
 
 	if(fp!=NULL){
-		int i = 0;
-		fwrite(&a, sizeof(int), 1, fp);
-		for(i = 0; i<a; i++){
+		int i = 0, k = 0;
+		fwrite(&sims, sizeof(int), 1, fp);
+		for(i = 0; i<sims; i++){
 			fwrite(&cats, sizeof(int), 1, fp);
-			fwrite(&freq, sizeof(freq), 1, fp);
-			fwrite(&sims, sizeof(int), 1, fp);
+			for(k = 0; k<cats; k++)
+				fwrite(&freq[k], sizeof(int), 1, fp);
+			fwrite(&events, sizeof(int), 1, fp);
 		}
 	}
+	fclose(fp);
 
 }
