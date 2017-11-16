@@ -8,9 +8,13 @@ void genDatasets(int batches, int items, int percentBad);
 void genSimParams ();
 
 
-void readConf(char* file, int* batches, int* items, int* percentBad, int* samples){
+void readConf(char* file, int* batches, int* items, int* batchPercentBad, int* itemPercentBad, int* samples){
 	FILE* fp = fopen(file, "r");
-	
+	fscanf(fp, "%d\n", batches);
+	fscanf(fp, "%d\n", batches);
+	fscanf(fp, "%d\n", batches);
+	fscanf(fp, "%d\n", batches);
+	fscanf(fp, "%d\n", batches);	
 }
 
 void genDatasets(int batches, int items, int percentBad){

@@ -4,11 +4,12 @@
 #include "analytic.h"
 #include "monteCarlo.h"
 
+void fprint(float* nums, int n);
 void print(int* nums, int n);
 
 int main (){
 	int i = 0;
-	FILE* fp = fopen("SimParameters.dat", "r+b");
+	//FILE* fp = fopen("SimParameters.dat", "r+b");
 	// FILE* fpw = fopen("SimParameters.dat", "wb");
 
 	genSimParams();
@@ -30,21 +31,34 @@ int main (){
 		if(input == 0){
 			printf("Simulation Running>...\n");
 
-	
+			FILE* fp = fopen("SimParameters.dat", "r+b");
+
+			float* partial;
+			float* prob;
+			float expectedValue = 0.0;
+
 			if(fp!=NULL){
 				fread(&sims, sizeof(int), 1, fp);
 				printf("sims=%d\n", sims);
 				for(i = 0; i<sims; i++){
 					fread(&cats, sizeof(int), 1, fp);
+					partial = (float*)malloc(cats*sizeof(float));
+					prob = (float*)malloc(cats*sizeof(float));
 					printf("cats:%d\n", cats);
 					int freq[cats];
 					fread(&freq, cats*sizeof(int), 1, fp);
 					print(freq, cats);
 					fread(&events, sizeof(int), 1, fp);
 					printf("events:%d\n", events);
+					probability(freq, prob, cats);
+					fprint(prob, cats);
+					cummulative(prob, partial, cats);
+					fprint(partial, cats);
+					//simulate(partial, events, cats);					
 				}
 			}
 
+			fclose(fp);
 
 		}else if(input == 1){
 			printf("Algorithm Running>...\n");
@@ -69,3 +83,12 @@ void print(int* nums, int n){
 	}
 	printf("\n");
 }
+
+void fprint(float* nums, int n){
+        int i = 0;
+        for(i = 0; i<n; i++){
+                printf("%.2f ", nums[i]);
+        }
+        printf("\n");
+}
+

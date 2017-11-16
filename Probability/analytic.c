@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include "analytic.h"
 #include <time.h>
+#include <math.h>
 
 void probability(int* freq, float* prob, int cats){
 	int total = 0, i = 0;
@@ -33,18 +34,19 @@ void cummulative(float* prob, float* partial , int cats){
 	}
 }
 
-void simulate(float* partial, int events, int cats, int sims){
+void simulate(float* partial, int events, int cats){
 	int s = 0, e = 0, i = 0; 
-	for(s = 0; s<sims; s++){
-		for(e = 0; e<events; e++){
-			int r = rand();
-			srand(time(NULL) + r);
-			for(i = 0; i<cats-1; i++){
-				r = (rand()*rand()*rand()*i)%100;
-				printf("Rand:%d\n", r);
-				if(r>partial[i] && r<partial[i+1]){
-					printf("Between: %.2f && %.2f\n", partial[i] , partial[i+1]);
-				}
+	for(e = 0; e<events; e++){
+		float r = (float)rand();
+		srand(time(NULL) + r);
+		printf("Event:%d\n", e);
+		r = abs(rand()*rand()*rand()*i);
+		for(i = 0; i<cats-1; i++){
+			printf("Rand:%d\n", r);
+			if(r>partial[i] && r<partial[i+1]){
+				printf("%d is between: %.2f and %.2f\n",r, partial[i] , partial[i+1]);
+			}else{
+				printf("Not in range:%d\n",r);
 			}
 		}
 	}
