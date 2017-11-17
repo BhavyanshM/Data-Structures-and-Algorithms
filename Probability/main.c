@@ -62,10 +62,21 @@ int main (){
 
 		}else if(input == 1){
 			printf("Algorithm Running>...\n");
+			int batches, items, batchPercentBad, itemPercentBad, samples;
+			int d = 0;
+			char filename[50];
+			for(d = 0; d<4; d++){
+				sprintf(filename, "c%d.txt", d+1);
+				readConf(filename, &batches, &items, &batchPercentBad, &itemPercentBad, &samples);
+				printf("Running:\n");
+				printf("Number of batches of items: %d\n", batches);
+				printf("Number of items in each batch: %d\n", items);
+				printf("Percentage of batches containing bad items: %d\n", batchPercentBad);
+				printf("Percentage of items that are bad in a batch: %d\n", itemPercentBad);
+				printf("Items sampled from each set: %d\n", samples);
+			}
 
-
-
-			genDatasets(10, 10, 10);
+			genDatasets(100, 100, 10, 8);
 
 
 

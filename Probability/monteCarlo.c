@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "monteCarlo.h"
+#include <time.h>
 
 short sample(char* filename, int sampleSize);
 void parse(char* dir, int batches, int items);
@@ -31,5 +32,6 @@ short sample(char* filename, int sampleSize){
 }
 
 int randomNum(int* visited, int size){
-	return 0;
+	srand(time(NULL)*size);
+	return rand()%100;
 }

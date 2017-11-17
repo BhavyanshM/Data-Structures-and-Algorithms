@@ -3,8 +3,10 @@
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <time.h>
+#include <math.h>
 
-void genDatasets(int batches, int items, int percentBad);
+
+void genDatasets(int batches, int items, int itemPercentBad, int batchPercentBad);
 void readConf(char* file, int* batches, int* items, int* batchPercentBad, int* itemPercentBad, int* samples);
 void genSimParams ();
 
@@ -18,26 +20,37 @@ void readConf(char* file, int* batches, int* items, int* batchPercentBad, int* i
 	fscanf(fp, "%d\n", samples);	
 }
 
-void genDatasets(int batches, int items, int percentBad){
+void genDatasets(int batches, int items, int itemPercentBad, int batchPercentBad){
 	FILE* fp;
 	int dir = mkdir("files", 0777);
 	char filename[10];
-	int i = 0, j = 0, bad = 0;
+	int i = 0, j = 0, bad = 0, badFiles = 0;
 	for(i = 0; i<batches; i++){
-		srand(time(NULL)*i);
+		bad = 0;
+		srand(time(NULL)*sin(i));
 		sprintf(filename, "files/ds%d.txt", i+1);	
 		fp = fopen(filename, "w");
-		for(j = 0; j<items; j++){
-			int shot = (rand()%100);
-			if(shot<percentBad){
-				fprintf(fp, "%c\n", 'b');
-				bad++;
-			}else{
+		int batchShot = (rand()%100);
+		if(batchShot<batchPercentBad){
+			badFiles++;
+			for(j = 0; j<items; j++){
+				int shot = (rand()%100);
+				if(shot<itemPercentBad){
+					fprintf(fp, "%c\n", 'b');
+					bad++;
+				}else{
+					fprintf(fp, "%c\n", 'g');
+				} 
+			}
+		}else{
+			for(j = 0; j<items; j++){
 				fprintf(fp, "%c\n", 'g');
 			}
 		}
+		
 		printf("TotalBadChips: %d\n", bad);
 	}
+	printf("TotalBadBatches: %d\n", badFiles);
 }
 
 void genSimParams (){
