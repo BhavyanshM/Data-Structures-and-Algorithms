@@ -3,9 +3,12 @@
 #include "generate.h"
 #include "analytic.h"
 #include "monteCarlo.h"
+#include <math.h>
 
+void toIntArray(float* partial, int* class, int size);
 void fprint(float* nums, int n);
 void print(int* nums, int n);
+void initArray(int* arr, int size);
 
 int main (){
 	int i = 0;
@@ -29,32 +32,59 @@ int main (){
 		scanf("%d", &input);
 
 		if(input == 0){
-			printf("Simulation Running>...\n");
+			printf("Simulation Running>...\n\n");
 
 			FILE* fp = fopen("SimParameters.dat", "r+b");
 
 			float* partial;
 			float* prob;
 			float expectedValue = 0.0;
+			float simValue = 0.0;
+			int* class;
 
 			if(fp!=NULL){
 				fread(&sims, sizeof(int), 1, fp);
-				printf("sims=%d\n", sims);
+				// printf("sims=%d\n", sims);
 				for(i = 0; i<sims; i++){
+
+					//Input number of parameters from SimParameters.dat
 					fread(&cats, sizeof(int), 1, fp);
+
+
+					//Alloacte memory to data structures
 					partial = (float*)malloc(cats*sizeof(float));
 					prob = (float*)malloc(cats*sizeof(float));
-					printf("cats:%d\n", cats);
+					class = (int*)malloc(cats*sizeof(int));
+
+					//Input the rest of data
+					// printf("cats:%d\n", cats);
 					int freq[cats];
 					fread(&freq, cats*sizeof(int), 1, fp);
-					print(freq, cats);
+					// print(freq, cats);
 					fread(&events, sizeof(int), 1, fp);
-					printf("events:%d\n", events);
+
+					//Analytical Calculations
 					probability(freq, prob, cats);
-					fprint(prob, cats);
+					// fprint(prob, cats);
 					cummulative(prob, partial, cats);
-					fprint(partial, cats);
-					//simulate(partial, events, cats);					
+					// fprint(partial, cats);
+					expectedValue = expected(prob, cats);
+
+					//Simulation and Calculations
+					toIntArray(partial, class, cats);
+					// print(class, cats);
+					initArray(freq, cats);
+					simulate(class, freq, events, cats);	
+					// print(freq, cats);				
+					probability(freq, prob, cats);
+					simValue = expected(prob, cats);
+
+					//Print the results
+					printf("Simulation %d\n\n", i+1);
+					printf("\tN:%d\n", events);
+					printf("Simulated Result: %.2f\n", simValue);
+					printf("Expected Value: %.2f\n", expectedValue);
+					printf("Percent Error: %.5f\n", (float)(-1)*(simValue - expectedValue)/expectedValue);
 				}
 			}
 
@@ -75,6 +105,20 @@ int main (){
 				printf("\tPercentage of items that are bad in a batch: %d\n", itemPercentBad);
 				printf("\tItems sampled from each set: %d\n\n", samples);
 				genDatasets(batches, items, itemPercentBad, batchPercentBad);
+
+				// parse("files", batches, items, samples);
+
+
+				printf("\n\nSummary\n\nRun: %d\n", i);
+				printf("\tNumber of batches of items: %d\n", batches);
+				printf("\tNumber of items in each batch: %d\n", items);
+				printf("\tPercentage of batches containing bad items: %d\n", batchPercentBad);
+				printf("\tPercentage of items that are bad in a batch: %d\n", itemPercentBad);
+				printf("\tItems sampled from each set: %d\n\n", samples);
+				printf("Base = %.2f exponent = %d\n", (100- itemPercentBad)/100.0, samples);
+				printf("P(failure to detect bad item) = %.7f\n", pow((100- itemPercentBad)/100.0, (float)samples));
+				printf("P(batch is good) = %.7f\n", 1.0 - pow((100- itemPercentBad)/100.0, (float)samples));
+				printf("Percentage of bad batches detected = %d\n", (int)100 - (int)(pow((100- itemPercentBad)/100.0, (float)samples)*100));
 			}
 
 
@@ -104,3 +148,16 @@ void fprint(float* nums, int n){
         printf("\n");
 }
 
+void toIntArray(float* partial, int* class, int size){
+	int i = 0; 
+	for(i = 0; i<size; i++){
+		class[i] = partial[i]*100;
+	}
+}
+
+void initArray(int* arr, int size){
+	int i = 0;
+	for(i = 0; i<size; i++){
+		arr[i] = 0;
+	}
+}
