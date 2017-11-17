@@ -18,6 +18,7 @@ void readConf(char* file, int* batches, int* items, int* batchPercentBad, int* i
 	fscanf(fp, "%d\n", batchPercentBad);
 	fscanf(fp, "%d\n", itemPercentBad);
 	fscanf(fp, "%d\n", samples);	
+	fclose(fp);
 }
 
 void genDatasets(int batches, int items, int itemPercentBad, int batchPercentBad){
@@ -42,15 +43,16 @@ void genDatasets(int batches, int items, int itemPercentBad, int batchPercentBad
 					fprintf(fp, "%c\n", 'g');
 				} 
 			}
+			printf("Create bad set batch # %d, totBad = %d, total = %d, badpct = %d\n", i, bad, items, itemPercentBad);
+
 		}else{
 			for(j = 0; j<items; j++){
 				fprintf(fp, "%c\n", 'g');
 			}
 		}
-		
-		printf("TotalBadChips: %d\n", bad);
+		fclose(fp);
 	}
-	printf("TotalBadBatches: %d\n", badFiles);
+	printf("Total bad sets = %d\n", badFiles);
 }
 
 void genSimParams (){

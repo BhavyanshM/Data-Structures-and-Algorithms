@@ -8,9 +8,12 @@ void parse(char* dir, int batches, int items);
 int randomNum(int* visited, int size);
 
 void parse(char* dir, int batches, int items){
+	FILE* fp;
 	int i = 0;
 	char filename[50];
-	for(i = 0; i<10; i++){
+	for(i = 0; i<batches; i++){
+		sprintf(filename, "files/ds%d.txt", i+1);	
+		fp = fopen(filename, "r");
 		sample(filename, items);
 	}
 }

@@ -68,22 +68,23 @@ int main (){
 			for(d = 0; d<4; d++){
 				sprintf(filename, "c%d.txt", d+1);
 				readConf(filename, &batches, &items, &batchPercentBad, &itemPercentBad, &samples);
-				printf("Running:\n");
-				printf("Number of batches of items: %d\n", batches);
-				printf("Number of items in each batch: %d\n", items);
-				printf("Percentage of batches containing bad items: %d\n", batchPercentBad);
-				printf("Percentage of items that are bad in a batch: %d\n", itemPercentBad);
-				printf("Items sampled from each set: %d\n", samples);
+				printf("\nRunning:\n");
+				printf("\tNumber of batches of items: %d\n", batches);
+				printf("\tNumber of items in each batch: %d\n", items);
+				printf("\tPercentage of batches containing bad items: %d\n", batchPercentBad);
+				printf("\tPercentage of items that are bad in a batch: %d\n", itemPercentBad);
+				printf("\tItems sampled from each set: %d\n\n", samples);
+				genDatasets(batches, items, itemPercentBad, batchPercentBad);
 			}
-
-			genDatasets(100, 100, 10, 8);
-
 
 
 		}else if(input == 2){
 			break;
-		}		
+		}
+
 	}
+
+
 	return 0;
 }
 
