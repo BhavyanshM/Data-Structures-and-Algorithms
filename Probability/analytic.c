@@ -42,11 +42,11 @@ void simulate(float* partial, int events, int cats){
 		printf("Event:%d\n", e);
 		r = abs(rand()*rand()*rand()*i);
 		for(i = 0; i<cats-1; i++){
-			printf("Rand:%d\n", r);
+			printf("Rand:%.2f\n", r);
 			if(r>partial[i] && r<partial[i+1]){
-				printf("%d is between: %.2f and %.2f\n",r, partial[i] , partial[i+1]);
+				printf("%.2f is between: %.2f and %.2f\n",r, partial[i] , partial[i+1]);
 			}else{
-				printf("Not in range:%d\n",r);
+				printf("Not in range:%.2f\n",r);
 			}
 		}
 	}

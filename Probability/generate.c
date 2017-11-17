@@ -2,9 +2,10 @@
 #include <stdlib.h>
 #include <sys/stat.h>
 #include <sys/types.h>
+#include <time.h>
 
-void readConf(char* file, int* batches, int* items, int* percentBad, int* samples);
 void genDatasets(int batches, int items, int percentBad);
+void readConf(char* file, int* batches, int* items, int* batchPercentBad, int* itemPercentBad, int* samples);
 void genSimParams ();
 
 
@@ -21,13 +22,21 @@ void genDatasets(int batches, int items, int percentBad){
 	FILE* fp;
 	int dir = mkdir("files", 0777);
 	char filename[10];
-	int i = 0, j = 0;
+	int i = 0, j = 0, bad = 0;
 	for(i = 0; i<batches; i++){
+		srand(time(NULL)*i);
 		sprintf(filename, "files/ds%d.txt", i+1);	
 		fp = fopen(filename, "w");
 		for(j = 0; j<items; j++){
-			fprintf(fp, "%c\n", 'g');
+			int shot = (rand()%100);
+			if(shot<percentBad){
+				fprintf(fp, "%c\n", 'b');
+				bad++;
+			}else{
+				fprintf(fp, "%c\n", 'g');
+			}
 		}
+		printf("TotalBadChips: %d\n", bad);
 	}
 }
 
