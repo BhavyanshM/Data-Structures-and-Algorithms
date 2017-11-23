@@ -34,19 +34,17 @@ void cummulative(float* prob, float* partial , int cats){
 	}
 }
 
-void simulate(float* partial, int events, int cats){
+void simulate(int* class, int* freq, int events, int cats){
 	int s = 0, e = 0, i = 0; 
 	for(e = 0; e<events; e++){
-		float r = (float)rand();
-		srand(time(NULL) + r);
-		printf("Event:%d\n", e);
-		r = abs(rand()*rand()*rand()*i);
+		int r = 0;
+		srand(time(NULL)*sin(e));
+		// printf("Event:%d\n", e);
+		r = abs(rand()%100);
 		for(i = 0; i<cats-1; i++){
-			printf("Rand:%.2f\n", r);
-			if(r>partial[i] && r<partial[i+1]){
-				printf("%.2f is between: %.2f and %.2f\n",r, partial[i] , partial[i+1]);
-			}else{
-				printf("Not in range:%.2f\n",r);
+			// printf("Rand:%d\n", r);
+			if(r>class[i] && r<class[i+1]){
+				freq[i]++;
 			}
 		}
 	}

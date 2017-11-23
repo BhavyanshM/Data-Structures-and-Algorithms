@@ -5,6 +5,8 @@
 #include <time.h>
 #include <math.h>
 
+#define MAX_CATS 50
+#define MAX_FREQ 10
 
 void genDatasets(int batches, int items, int itemPercentBad, int batchPercentBad);
 void readConf(char* file, int* batches, int* items, int* batchPercentBad, int* itemPercentBad, int* samples);
@@ -66,17 +68,25 @@ void genSimParams (){
 	int events = 500;
 	int nums[a];
 	int cats = 6;
-	int sims = 4;
+	int sims = 10;
 
 	int freq[] = {3, 5, 7, 5, 2, 3};
+
+	int tempRand = 0;
 
 	if(fp!=NULL){
 		int i = 0, k = 0;
 		fwrite(&sims, sizeof(int), 1, fp);
 		for(i = 0; i<sims; i++){
-			fwrite(&cats, sizeof(int), 1, fp);
-			for(k = 0; k<cats; k++)
-				fwrite(&freq[k], sizeof(int), 1, fp);
+			srand(time(NULL)*sin(i));
+			tempRand = rand()%MAX_CATS;
+			cats = tempRand;
+			fwrite(&tempRand, sizeof(int), 1, fp);
+			for(k = 0; k<cats; k++){
+				srand(time(NULL)*sin(k));
+				tempRand = rand()%MAX_FREQ;
+				fwrite(&tempRand, sizeof(int), 1, fp);
+			}				
 			fwrite(&events, sizeof(int), 1, fp);
 		}
 	}
