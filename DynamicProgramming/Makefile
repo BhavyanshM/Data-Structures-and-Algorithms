@@ -1,16 +1,13 @@
-all: tree clean
+all: dp clean
 
-tree: model.o priority.o queue.o main.o 
-	gcc model.o priority.o queue.o main.o -o tree -l m
+dp: lcs.o similarity.o main.o 
+	gcc lcs.o similarity.o main.o -o dp -l m
 
-model.o: model.c
-	gcc -c model.c
+lcs.o: lcs.c
+	gcc -c lcs.c
 
-priority.o: priority.c
-	gcc -c priority.c
-
-queue.o: queue.c
-	gcc -c queue.c
+similarity.o: similarity.c
+	gcc -c similarity.c
 
 main.o: main.c
 	gcc -c main.c

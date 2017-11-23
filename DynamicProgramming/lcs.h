@@ -1,0 +1,1 @@
+char* getNextString(FILE* fp, char* input);
