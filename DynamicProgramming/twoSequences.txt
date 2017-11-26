@@ -1,2 +1,2 @@
-multipleSequences.txt
-twoSequences.txt
+mach
+abcde

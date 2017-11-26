@@ -10,8 +10,26 @@ int main(){
 
 	char* input;
 
-	printf("%s\n", getNextString(fp, input));
-	printf("%s\n", getNextString(fp, input));
+	//printf("%s\n", getNextString(fp, input));
+	//printf("%s\n", getNextString(fp, input));
+
+	char X[2000];
+	char Y[2000];
+	char* LCS;
+
+	// getNextString(fp, X);
+	// getNextString(fp, Y);
+
+	fscanf(fp, "%s\n", X);
+	fscanf(fp, "%s\n", Y);
+
+	fclose(fp);
+
+	printf("%s , %s\n", X, Y);
+
+	lcs(X, Y, LCS);
+
+
 }
 
 
