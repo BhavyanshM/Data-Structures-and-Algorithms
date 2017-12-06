@@ -1,7 +1,8 @@
-multipleSequences.txt
-twoSequences.txt
-This is a sequence.
-Sequential Access
-Direct Access
-The first two strings in this file are the names of the sample files.
-This line describes this line in this file.b 
+7
+multi
+twoSeque
+This
+Sequccess
+Direess
+Thefamplefiles.
+This 
