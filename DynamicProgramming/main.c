@@ -8,7 +8,7 @@
 
 
 int main(){
-	printf("PART 1\n\nReading local file: twoSequences.txt\n");
+	printf("\nPART 1\n\nReading local file: twoSequences.txt\n");
 	FILE* fp = fopen("twoSequences.txt", "r");
 
 	char* input;
