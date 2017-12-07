@@ -52,10 +52,10 @@ int main(){
 	b[3] = 9;
 	b[4] = 12;
 
-	reset(a, 6, b, 5);	
+	// reset(a, 6, b, 5);	
 
-	print(a, 5);
-	print(b, 6);
+	// print(a, 5);
+	// print(b, 6);
 
 	return 0;
 }
