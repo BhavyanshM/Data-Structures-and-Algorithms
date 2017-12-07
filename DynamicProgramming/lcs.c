@@ -65,6 +65,7 @@ int lcs(char* X, char* Y, char* LCS){
 
 	printf("Length of LCS: %d\nLCS: ", dp[lenX][lenY]);
 	construct(dp, lenX, lenY);
+	return dp[lenX][lenY];
 }
 
 void construct(int dp[rows+1][cols+1], int i, int j){

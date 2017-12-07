@@ -43,9 +43,13 @@ void display(int n, FILE* fp, int* starts){
 		for(j = i+1; j<=n; j++){
 			getString(i-1, "multipleSequences.txt", starts, X);
 			getString(j-1, "multipleSequences.txt", starts, Y);
-			// printf("%s , %s\n", X, Y);
-			len = opt_lcs(X,Y);
-			printf("%c ", sim(len, strlen(X) , strlen(Y)));
+			printf("%s , %s\n", X, Y);
+			char temp[2000];
+			int sec = 0;
+			sec = opt_lcs(X,Y);
+			len = lcs(X,Y, temp);
+			printf("\nlcs:%d%c\n", len, sim(len, strlen(X) , strlen(Y)));
+			printf("sec:%d%c\n", sec, sim(sec, strlen(X), strlen(Y)));
 		}
 		printf("\n");
 	}
