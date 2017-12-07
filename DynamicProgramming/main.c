@@ -5,27 +5,18 @@
 #include "lcs.h"
 #include "similarity.h"
 
-void print(int* a, int n){
-        int i = 0;
-        for(i = 0; i<n; i++)
-        printf("%d ", a[i]);
-        printf("\n");
-}
+#define NEWLINE 1
+#define OFFSET 3
+
 
 int main(){
 	FILE* fp = fopen("twoSequences.txt", "r");
 
 	char* input;
 
-	//printf("%s\n", getNextString(fp, input));
-	//printf("%s\n", getNextString(fp, input));
-
 	char X[2000];
 	char Y[2000];
 	char* LCS;
-
-	// getNextString(fp, X);
-	// getNextString(fp, Y);
 
 	fscanf(fp, "%s\n", X);
 	fscanf(fp, "%s\n", Y);
@@ -33,11 +24,10 @@ int main(){
 	fclose(fp);
 
 	printf("%s , %s\n", X, Y);
-
 	lcs(X, Y, LCS);
-
 	printf("\n");
 
+<<<<<<< HEAD
 	int* a = malloc(sizeof(int)*6);
 	a[0] = 9;
 	a[1] = 3;
@@ -56,6 +46,26 @@ int main(){
 
 	// print(a, 5);
 	// print(b, 6);
+=======
+	FILE* msfp = fopen("multipleSequences.txt", "r");
+	int num = 0;
+	fscanf(msfp, "%d\n", &num);
+
+	display(num, msfp);	
+	printf("\n\n");
+
+	int* starts = NULL;
+	starts = (int*)malloc(num*sizeof(int));
+	startings(num, msfp, starts);
+	
+	fclose(msfp);
+
+	msfp = fopen("multipleSequences.txt", "r");
+	char str[2000];
+	fseek(msfp, 38  + OFFSET, SEEK_SET);
+	fscanf(msfp, "%s\n", str);
+	printf("%s\n", str);
+>>>>>>> 13486f5e74fb603a8cf5a727fb1828f9bde47843
 
 	return 0;
 }
