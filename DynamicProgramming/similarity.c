@@ -1,6 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "lcs.h"
+
+#define NL 1
+#define OFFSET 2
 
 char sim(int lcs, int a, int b){
 	if(a>=b){
@@ -19,15 +23,29 @@ char sim(int lcs, int a, int b){
 	return '\0';
 }
 
-void display(int n, FILE* fp){
-	int i = 1, j = 1;
+void getString(int n, char* name, int* starts, char* str){
+	FILE* msfp = fopen(name , "r");
+	// char str[2000];
+	fseek(msfp, starts[n]  + OFFSET, SEEK_SET);
+	fscanf(msfp, "%s\n", str);
+	// printf("%s\n", str);
+	fclose(msfp);
+}
+
+void display(int n, FILE* fp, int* starts){
+	int i = 1, j = 1, len = 0;
+	char X[2000],Y[2000];
 	for(i = 1; i<=n; i++){
 		for(j = 1; j<=i; j++){
-			printf("  ");
+			printf("- ");
 		}
 
 		for(j = i+1; j<=n; j++){
-			printf("%c ", sim(i, (i+j)/2 ,j));
+			getString(i-1, "multipleSequences.txt", starts, X);
+			getString(j-1, "multipleSequences.txt", starts, Y);
+			// printf("%s , %s\n", X, Y);
+			len = opt_lcs(X,Y);
+			printf("%c ", sim(len, strlen(X) , strlen(Y)));
 		}
 		printf("\n");
 	}
@@ -48,10 +66,11 @@ void startings(int n, FILE* fp, int* s){
 	int size = 0;
 	for(i = 1; i<=n; i++){
 		fscanf(fp, "%s\n", str);
-	        int size = strlen(str);
-		s[i] = s[i-1] + size + 2*(i-1);
+	    int size = strlen(str);
+		s[i] = s[i-1] + size + NL;
 		printf("%d ", size);
 	}
 	printf("\n");
 	print(s, n);
 }
+

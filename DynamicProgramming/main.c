@@ -5,8 +5,6 @@
 #include "lcs.h"
 #include "similarity.h"
 
-#define NEWLINE 1
-#define OFFSET 3
 
 
 int main(){
@@ -23,7 +21,7 @@ int main(){
 
 	fclose(fp);
 
-	printf("%s , %s\n", X, Y);
+	// printf("%s , %s\n", X, Y);
 	lcs(X, Y, LCS);
 	printf("\n");
 
@@ -32,20 +30,20 @@ int main(){
 	int num = 0;
 	fscanf(msfp, "%d\n", &num);
 
-//	display(num, msfp);	
-	printf("\n\n");
-
 	int* starts = NULL;
 	starts = (int*)malloc(num*sizeof(int));
 	startings(num, msfp, starts);
+
+	display(num, msfp, starts);	
+	printf("\n\n");
+
+	
 	
 	fclose(msfp);
 
-	msfp = fopen("multipleSequences.txt", "r");
-	char str[2000];
-	fseek(msfp, 40  + OFFSET, SEEK_SET);
-	fscanf(msfp, "%s\n", str);
-	printf("%s\n", str);
+	
+
+	// printf("LCS length is:%d\n", opt_lcs("colldegeclavpelk", "chocolateclvpk"));
 
 	return 0;
 }

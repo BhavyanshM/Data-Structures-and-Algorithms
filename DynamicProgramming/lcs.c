@@ -48,12 +48,12 @@ int lcs(char* X, char* Y, char* LCS){
 					dp[i][j] = dp[i][j-1];
 				}
 			}
-			//printf("%d ", dp[i][j]);
+			// printf("%d ", dp[i][j]);
 
 		}
-		//printf("\n");
+		// printf("\n");
 	}
-	//printf("\n");
+	// printf("\n");
 
 	//for (i = 1; i < lenX+1; i++){
 		// printf("\t");
@@ -83,7 +83,7 @@ void construct(int dp[rows+1][cols+1], int i, int j){
 	}
 }
 
-void opt_lcs(char* X, char* Y){
+int opt_lcs(char* X, char* Y){
 	int i = 0, j = 0;
 
         int lenX = strlen(X);
@@ -117,19 +117,41 @@ void opt_lcs(char* X, char* Y){
                         }else{
                         	if(X[i-1]==Y[j-1]){
                                 // printf("%c \n" , X[i-1]);
-                                dp2[j] = dp1[j-1] + 1;
-                        }else{
-                                if(dp1[j] >= dp2[j-1]){
-                                        dp2[j] = dp1[j];
-                                }else{
-                                        dp2[j] = dp1[j-1];
-                                }
-                        }
+                               		dp2[j] = dp1[j-1] + 1;
+	                        }else{
+	                                if(dp1[j] >= dp2[j-1]){
+	                                        dp2[j] = dp1[j];
+	                                }else{
+	                                        dp2[j] = dp2[j-1];
+	                                }
+	                        }
                         //printf("%d ", dp[i][j]);
                         }
                 }
-                reset(dp1, dp2, lenY+1);
+
+
+
+     //            if(i%2==0){
+     //            	int i = 0;
+					// printf("dp1: ");
+					// for(i = 1; i<=lenY; i++){
+					// 	printf("%d ", dp1[i]);
+					// }printf("\n");
+     //            }else{
+     //            	int i = 0;
+					// printf("dp2: ");
+					// for(i = 1; i<=lenY; i++){
+					// 	printf("%d ", dp2[i]);
+					// }printf("\n");
+     //            }   
+
+
+
+                        
+                // reset(dp1, dp2, lenY+1);
 		}	
+		if(lenX%2==0)return dp1[lenY];
+		if(lenX%2==1)return dp2[lenY];
 }
 
 void reset(int* a, int* b, int n){
