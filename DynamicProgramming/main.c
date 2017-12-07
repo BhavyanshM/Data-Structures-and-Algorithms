@@ -8,6 +8,7 @@
 
 
 int main(){
+	printf("PART 1\n\nReading local file: twoSequences.txt\n");
 	FILE* fp = fopen("twoSequences.txt", "r");
 
 	char* input;
@@ -22,10 +23,12 @@ int main(){
 	fclose(fp);
 
 	// printf("%s , %s\n", X, Y);
-	lcs(X, Y, LCS);
 	printf("\n");
+	lcs(X, Y, LCS);
+	printf("\n\n");
 
 
+	printf("PART 2\n\nReading local file: multipleSequences.txt");
 	FILE* msfp = fopen("multipleSequences.txt", "r");
 	int num = 0;
 	fscanf(msfp, "%d\n", &num);
@@ -34,6 +37,7 @@ int main(){
 	starts = (int*)malloc(num*sizeof(int));
 	startings(num, msfp, starts);
 
+	printf("Performing similarity comparison on all unique pairings: multipleSequences.txt\n\n");
 	display(num, msfp, starts);	
 	printf("\n\n");
 

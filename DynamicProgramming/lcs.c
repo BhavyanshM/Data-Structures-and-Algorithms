@@ -32,7 +32,7 @@ int lcs(char* X, char* Y, char* LCS){
 	for(i = 0; i<=lenX; i++)
 		for(j = 0; j<=lenY; j++)dp[i][j] = 0;
 
-	//printf("%s , %s\n", X, Y);
+	printf("String 1: %s \nString 2: %s\n", X, Y);
 
 	
 

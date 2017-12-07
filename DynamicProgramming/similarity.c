@@ -35,7 +35,16 @@ void getString(int n, char* name, int* starts, char* str){
 void display(int n, FILE* fp, int* starts){
 	int i = 1, j = 1, len = 0;
 	char X[2000],Y[2000];
+
+	printf("  ");
 	for(i = 1; i<=n; i++){
+		printf("%d ", i);
+	}printf("\n");
+
+	for(i = 1; i<=n; i++){
+
+		printf("%d ", i);
+
 		for(j = 1; j<=i; j++){
 			printf("- ");
 		}
@@ -43,13 +52,14 @@ void display(int n, FILE* fp, int* starts){
 		for(j = i+1; j<=n; j++){
 			getString(i-1, "multipleSequences.txt", starts, X);
 			getString(j-1, "multipleSequences.txt", starts, Y);
-			printf("%s , %s\n", X, Y);
-			char temp[2000];
+			// printf("%s , %s\n", X, Y);
+			// char temp[2000];
 			int sec = 0;
 			sec = opt_lcs(X,Y);
-			len = lcs(X,Y, temp);
-			printf("\nlcs:%d%c\n", len, sim(len, strlen(X) , strlen(Y)));
-			printf("sec:%d%c\n", sec, sim(sec, strlen(X), strlen(Y)));
+			// len = lcs(X,Y, temp);
+			printf("%c ", sim(sec, strlen(X), strlen(Y)));
+			// printf("\nlcs:%d%c\n", len, sim(len, strlen(X) , strlen(Y)));
+			// printf("sec:%d%c\n", sec, sim(sec, strlen(X), strlen(Y)));
 		}
 		printf("\n");
 	}
@@ -72,9 +82,9 @@ void startings(int n, FILE* fp, int* s){
 		fscanf(fp, "%s\n", str);
 	    int size = strlen(str);
 		s[i] = s[i-1] + size + NL;
-		printf("%d ", size);
+		// printf("%d ", size);
 	}
 	printf("\n");
-	print(s, n);
+	// print(s, n);
 }
 
